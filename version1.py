@@ -28,7 +28,11 @@ df1[info] = df1[info].fillna(method='ffill')
 # Fill NA with zeros
 numeric_data = [columns[x] for x in range(5,20)]
 print(numeric_data)
-df1[numeric_data] = df1[numeric_data].fillna(0)
+# df1[numeric_data] = df1[numeric_data].fillna(0)
+
+df1[[columns[2]]] = df1[[columns[2].str.contains('Total')==False]]
+print(type(df1[columns[2]]))
+# print(df1[columns[2].astype(basestring)])
 
 # Can use lambda function here...
 df1[''] = ""
@@ -41,8 +45,8 @@ df1['April Reforecast FY recal'] = df1[columns[10]] + df1[columns[11]] + df1[col
 df1.append(df1[[columns[5]]].sum().rename('Grandtotal33')).fillna('')
 
 '''--->'''
-df1.loc['GrandTotal55'] = df1[[columns[5],columns[6]]].sum()
-df1.loc['GrandTotal55'] = df1.loc['GrandTotal55'].fillna('')
+df1.loc['GrandTotal'] = df1[[columns[x] for x in range(5,20)]].sum()
+# df1.loc['GrandTotal55'] = df1.loc['GrandTotal55'].fillna('')
 
 # for label, _df in df1.groupby(columns[5],columns[6]):
 #     print(label)
