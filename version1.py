@@ -14,6 +14,17 @@ df1 = pd.read_excel(xls, 'REGN Pral Clinical Studies')
 # print(df2.head())
 # Carryfwd value from prior (forward fill = ffill)
 rows, columns = df1.shape 
+
+# def turn_to_cols(x):
+#     return columns[x]
+
+# cols = [ x for x in range(0,4)]
+# cols_res = map(turn_to_cols, cols)
+# print([cols_res])
+
+# print('4'*20)
+# df1.loc[:,cols] = df1.loc[:,cols].ffill()
+# print(df1.head())
 # columns = df1.columns.tolist()
 # print(columns[0:3])
 # rows = df1.rows.tolist()
@@ -33,8 +44,16 @@ print('******'*20)
 
 ''' Data forwardfill '''
 # Fill NA with zeros
-# df1['Unnamed: 5'].fillna(0, inplace = True)
-# print(df1.head())
+print(df1.iloc[5,2])
+print(df1.head())
+
+df1.replace(np.nan,0)
+# for i in range(5, rows):
+#     for j in range(2,columns):
+#         if df1.iloc[i,j] == NaN:
+#             df1[i,j].fillna(0, inplace = True)
+
+print(df1.head())
 
 def assign_quarterly_sum(array_name, quarter_name, row_number, column_number, sheet):
     '''recalculate total by columns'''
@@ -43,34 +62,53 @@ def assign_quarterly_sum(array_name, quarter_name, row_number, column_number, sh
         pass
     array_name[quarter_name] += df1.iloc[row, column_number]
 
-header = True
-for row in range(rows):
-    if header:
-        if df1.iloc[row,0] =='Budget Type': 
-            header = False
-            # print(row, 'label row- skip')
-    else:
-        budget = {}
-        reforecast = {}
-        actual = {}
+budget = {}
+reforecast = {}
+actual = {}
 
-        assign_quarterly_sum( budget, 'Q1', row, 5, df1)
-        assign_quarterly_sum( budget, 'Q2', row, 6, df1)
-        assign_quarterly_sum( budget, 'Q3', row, 7, df1)
-        assign_quarterly_sum( budget, 'Q4', row, 8, df1)
-        assign_quarterly_sum( budget, 'FY', row, 9, df1)
+for row in range(1, rows):
 
-        assign_quarterly_sum( reforecast, 'Q1', row, 10, df1)
-        assign_quarterly_sum( reforecast, 'Q2', row, 11, df1)
-        assign_quarterly_sum( reforecast, 'Q3', row, 12, df1)
-        assign_quarterly_sum( reforecast, 'Q4', row, 13, df1)
-        assign_quarterly_sum( reforecast, 'FY', row, 14, df1)
-        
-        assign_quarterly_sum( actual, 'Q1', row, 15, df1)
-        assign_quarterly_sum( actual, 'Q2', row, 16, df1)
-        assign_quarterly_sum( actual, 'Q3', row, 17, df1)
-        assign_quarterly_sum( actual, 'Q4', row, 18, df1)
-        assign_quarterly_sum( actual, 'FY', row, 19, df1)
+    budget_map = {
+                'Q1': 5,
+                'Q2': 6,
+                'Q3': 7,
+                'Q4': 8,
+                'FY': 9
+                }
+
+    reforecast_map = {
+                'Q1': 10,
+                'Q2': 11,
+                'Q3': 12,
+                'Q4': 13,
+                'FY': 14
+                }
+
+    actual_map = {
+                'Q1': 15,
+                'Q2': 16,
+                'Q3': 17,
+                'Q4': 18,
+                'FY': 19
+                }
+
+    assign_quarterly_sum( budget, 'Q1', row, budget_map['Q1'], df1)
+    assign_quarterly_sum( budget, 'Q2', row, budget_map['Q2'], df1)
+    assign_quarterly_sum( budget, 'Q3', row, budget_map['Q3'], df1)
+    assign_quarterly_sum( budget, 'Q4', row, budget_map['Q4'], df1)
+    assign_quarterly_sum( budget, 'FY', row, budget_map['FY'], df1)
+
+    assign_quarterly_sum( reforecast, 'Q1', row, reforecast_map['Q1'], df1)
+    assign_quarterly_sum( reforecast, 'Q2', row, reforecast_map['Q2'], df1)
+    assign_quarterly_sum( reforecast, 'Q3', row, reforecast_map['Q3'], df1)
+    assign_quarterly_sum( reforecast, 'Q4', row, reforecast_map['Q4'], df1)
+    assign_quarterly_sum( reforecast, 'FY', row, reforecast_map['FY'], df1)
+    
+    assign_quarterly_sum( actual, 'Q1', row, actual_map['Q1'], df1)
+    assign_quarterly_sum( actual, 'Q2', row, actual_map['Q2'], df1)
+    assign_quarterly_sum( actual, 'Q3', row, actual_map['Q3'], df1)
+    assign_quarterly_sum( actual, 'Q4', row, actual_map['Q4'], df1)
+    assign_quarterly_sum( actual, 'FY', row, actual_map['FY'], df1)
 
 print(f'budget: {budget}')
 print(f'reforecast: {reforecast}')
@@ -86,7 +124,6 @@ def assign_fy_by_row(array_name, row_number, column_number, sheet):
     '''recalculate total by rows'''
     array_name[row] = 0
     if type(df1.iloc[row,column_number]) == float or type(df1.iloc[row,column_number]) == int:
-        # print(df1.iloc[row,column_number])
         array_name[row] += df1.iloc[row,column_number]
 
 budget_recal= {}
