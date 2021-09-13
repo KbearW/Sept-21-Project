@@ -32,11 +32,12 @@ print(f'a specific location (R,C) (0,3) should be clinical study name:{df1.iloc[
 print('******'*20)
 
 ''' Data forwardfill '''
-# info = [columns[x] for str(x) in range(0,4)]
-# df1[info] = df1[info].fillna(method='ffill')
+# Fill NA with zeros
+# df1['Unnamed: 5'].fillna(0, inplace = True)
+# print(df1.head())
 
 def assign_quarterly_sum(array_name, quarter_name, row_number, column_number, sheet):
-    '''recalculate total based on clinical study number'''
+    '''recalculate total by columns'''
     array_name[quarter_name] = 0
     if 'Total' in str(df1.iloc[row,0]) or 'Total' in str(df1.iloc[row,1]) or 'Total' in str(df1.iloc[row,2]):
         pass
@@ -70,28 +71,87 @@ for row in range(rows):
         assign_quarterly_sum( actual, 'Q3', row, 17, df1)
         assign_quarterly_sum( actual, 'Q4', row, 18, df1)
         assign_quarterly_sum( actual, 'FY', row, 19, df1)
+
+print(f'budget: {budget}')
+print(f'reforecast: {reforecast}')
+print(f'actual: {actual}')
+
+
+
+
+
+
+
+def assign_fy_by_row(array_name, row_number, column_number, sheet):
+    '''recalculate total by rows'''
+    array_name[row] = 0
+    if type(df1.iloc[row,column_number]) == float or type(df1.iloc[row,column_number]) == int:
+        # print(df1.iloc[row,column_number])
+        array_name[row] += df1.iloc[row,column_number]
+
+budget_recal= {}
+april_reforecast_recal= {}
+actuals_recal = {}
+for row in range(1,rows):
+    for column in range(6, 9):
+        assign_fy_by_row(budget_recal, row, column, df1)
+
+    for column in range(10, 15):
+        assign_fy_by_row(april_reforecast_recal, row, column, df1)
+
+    for column in range(16,20):
+        assign_fy_by_row(actuals_recal, row, column, df1)
+
+print(f'budget_recal: {budget_recal}')
+print(f'april_reforecast_recal: {april_reforecast_recal}')
+print(f'actuals_recal: {actuals_recal}')
+
+
+
+
+# def assign_quarterly_sum_by_clinical_number(array_name, quarter_name, row_number, column_number, sheet):
+#     '''recalculate total by clinical study number'''
+#     array_name[quarter_name] = 0
+#     if 'Total' in str(df1.iloc[row,0]) or 'Total' in str(df1.iloc[row,1]) or 'Total' in str(df1.iloc[row,2]):
+#         pass
+#     array_name[quarter_name] += df1.iloc[row, column_number]
+
+# header = True
+# for row in range(rows):
+#     if header:
+#         if df1.iloc[row,0] =='Budget Type': 
+#             header = False
+#             # print(row, 'label row- skip')
+#     else:
+#         budget = {}
+#         reforecast = {}
+#         actual = {}
+
+#         assign_quarterly_sum( budget, 'Q1', row, 5, df1)
+#         assign_quarterly_sum( budget, 'Q2', row, 6, df1)
+#         assign_quarterly_sum( budget, 'Q3', row, 7, df1)
+#         assign_quarterly_sum( budget, 'Q4', row, 8, df1)
+#         assign_quarterly_sum( budget, 'FY', row, 9, df1)
+
+#         assign_quarterly_sum( reforecast, 'Q1', row, 10, df1)
+#         assign_quarterly_sum( reforecast, 'Q2', row, 11, df1)
+#         assign_quarterly_sum( reforecast, 'Q3', row, 12, df1)
+#         assign_quarterly_sum( reforecast, 'Q4', row, 13, df1)
+#         assign_quarterly_sum( reforecast, 'FY', row, 14, df1)
         
-# res = {}
-# res['reforecast'] = reforecast
-print(budget)
-print(reforecast)
-print(actual)
-# print(res)
+#         assign_quarterly_sum( actual, 'Q1', row, 15, df1)
+#         assign_quarterly_sum( actual, 'Q2', row, 16, df1)
+#         assign_quarterly_sum( actual, 'Q3', row, 17, df1)
+#         assign_quarterly_sum( actual, 'Q4', row, 18, df1)
+#         assign_quarterly_sum( actual, 'FY', row, 19, df1)
 
-# df1['testing- blank'] = "123545"
+# print(f'budget: {budget}')
+# print(f'reforecast: {reforecast}')
+# print(f'actual: {actual}')
 
-# df1['recal'] = budget
 
-# # # Fill NA with zeros
-# # numeric_data = [columns[x] for x in range(5,31)]
-# # print(numeric_data)
-# # df1[numeric_data] = df1[numeric_data].fillna(0)
-# # print(df1.loc['54321'])
-# print('-----'*30)
-# print(df1[1:3])
 
-# print(f"rows: {rows}")
-# print(f"columns: {columns}")
+
 
 # # # Fill NA with zeros
 # # numeric_data = [columns[x] for x in range(5,20)]
