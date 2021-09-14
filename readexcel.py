@@ -8,6 +8,19 @@ df1 = pd.read_excel(xls, 'Sheet1')
 
 print(f'column names: {df1.columns[0]}')
 
+
+# print(f'a specific location (R,C) (2,10) should be 606:{df1.iloc[2,10]}')
+
+# print(f'a specific location (R,C) (0,0) should be BudgetType:{df1.iloc[0,0]}')
+# print(f'a specific location (R,C) (1,0) should be Development:{df1.iloc[1,0]}')
+# print(f'a specific location (R,C) (0,1) should be Activity:{df1.iloc[0,1]}')
+# print(f'a specific location (R,C) (0,3) should be clinical study name:{df1.iloc[0,3]}')
+
+
+# print('******'*20)
+
+
+
 # print(df1['Unnamed: 0'])
 # print(df1['Unnamed: 5'])
 # print(df1['DateRange1'])
@@ -56,7 +69,7 @@ print(f'column names: {df1.columns[0]}')
 
 # #print(df1.loc[df1['DateRange2']==2])
 # #print('*'*20)
-# #for col in df1.columns:
+# #for col in df1.columns
 # #    print(col)
 
 # #print(df1.columns.values.tolist())
