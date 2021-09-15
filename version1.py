@@ -42,6 +42,12 @@ reforecast = {}
 actual = {}
 actuals_vs_budget = {}
 actuals_vs_april = {}
+budget_type = {}
+activity = {}
+clinical_study_number = {}
+clinical_study_name = {}
+cost_type = {}
+
 
 for row in range(1, rows):
 
@@ -114,6 +120,18 @@ for row in range(1, rows):
     assign_quarterly_sum( actuals_vs_april, data_cols[22], row, var_actuals_vs_april_map['Q3'], df1)
     assign_quarterly_sum( actuals_vs_april, data_cols[23], row, var_actuals_vs_april_map['Q4'], df1)
     assign_quarterly_sum( actuals_vs_april, data_cols[24], row, var_actuals_vs_april_map['FY'], df1)
+
+subtotal = {}
+for labelnum in range(1,len(label_cols)):
+    for datanum in range(len(data_cols)):
+        print(datanum, labelnum)
+        subtotal[labelnum] = df1.groupby(label_cols[labelnum])[data_cols[datanum]].sum()
+
+df1.loc['subtotal'] = {**subtotal}
+
+# print(label_cols)
+# print(data_cols)
+
 # print(f'budget: {budget}')
 # print(f'reforecast: {reforecast}')
 # print(f'actual: {actual}')
@@ -139,6 +157,7 @@ def assign_fy_by_row(array_name, row_number, column_number, sheet):
 budget_recal= {}
 april_reforecast_recal= {}
 actuals_recal = {}
+
 for row in range(1,rows):
     for column in range(6, 9):
         assign_fy_by_row(budget_recal, row, column, df1)
@@ -151,7 +170,12 @@ for row in range(1,rows):
     for column in range(16,20):
         assign_fy_by_row(actuals_recal, row, column, df1)
         actuals_recal[0] = 'actuals_recal'
-
+    #########
+    # '''Groupby labels'''
+    # for column in range(6,columns):
+    #     assign_fy_by_row(budget_type, row, column, df1)
+    #     label_cols[0] = 'budget_type'
+        
 # print(f'budget_recal: {budget_recal}')
 # print(f'april_reforecast_recal: {april_reforecast_recal}')
 # print(f'actuals_recal: {actuals_recal}')
@@ -161,6 +185,7 @@ df1['budget_recal'] = pd.DataFrame.from_dict(budget_recal, orient = 'index')
 df1['april_reforecast_recal'] = pd.DataFrame.from_dict(april_reforecast_recal, orient = 'index')
 df1['actuals_recal'] = pd.DataFrame.from_dict(actuals_recal, orient = 'index')
 df1[''] = ''
+# df1['Budget Type'] = pd.DataFrame.from_dict(budget_type, orient = 'index')
 
 # variance_act_act = df1['actuals_recal'] - df1['april_reforecast_recal'] 
 # print(variance_act_act)
@@ -169,13 +194,15 @@ actuals_recal = pd.DataFrame(df1, columns = ['actuals_recal'])
 april_reforecast_recal = pd.DataFrame(df1, columns = ['april_reforecast_recal'])
 apr_act_var_imported = pd.DataFrame(df1, columns = ['Unnamed: 29'])
 
-print(actuals_recal)
-print(april_reforecast_recal)
-print(apr_act_var_imported)
+# print(type(df1.iloc[8,5]), df1.iloc[8,5])
+# print(type(actuals_recal[4]),actuals_recal[4])
+
+# print(april_reforecast_recal)
+# print(apr_act_var_imported)
 
 
 # this doesn't work..
-print((actuals_recal-april_reforecast_recal))
+# print((actuals_recal-april_reforecast_recal))
 
 # df1['(act - april) - variance'] = actuals_recal - april_reforecast_recal - apr_act_var_imported
 
