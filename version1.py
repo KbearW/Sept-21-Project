@@ -121,61 +121,27 @@ for row in range(1, rows):
     assign_quarterly_sum( actuals_vs_april, data_cols_list[23], row, var_actuals_vs_april_map['Q4'], df1)
     assign_quarterly_sum( actuals_vs_april, data_cols_list[24], row, var_actuals_vs_april_map['FY'], df1)
 
-# budget_type = {}
-# label_cols[2] = {}
-# for datanum in range(len(data_cols)):
-#     # print(f'data_cols[datanum]: {data_cols[datanum]}')
-#     # print(f'label_cols[1]: {label_cols[1]}')
 
-#     budget_type[datanum] =df1.groupby(label_cols[1])[data_cols[datanum]].sum()
-# df1.loc['budget_type'] = budget_type
+#######################################################################################
 
-# print(df1.groupby(label_cols[1])[data_cols[9]].sum())
-# print(type(df1.groupby(label_cols[1])[data_cols[9]].sum()))
-# budget_type['activity'] = df1.groupby(label_cols[1])[data_cols[9]].sum()
-# df1.loc['test'] = budget_type
-# print(df1.groupby(label_cols[2])[data_cols[9]].sum())
-# print(df1.groupby(label_cols[3])[data_cols[9]].sum())
-# print(df1.groupby(label_cols[4])[data_cols[9]].sum())
+
 
 list_df = []
-
-for elem in data_cols_list:
+def groupby_label_list(list):
+    '''Groupby labels'''
+    
     for label in label_cols_list:
-        col_label = elem
-        s0 = pd.DataFrame(df1.groupby(label).agg(col_label = (elem, 'sum')))
+        data = df1.groupby(label)[data_cols_list].apply(sum)
+        s0 = pd.DataFrame(data)
+        s0.loc[''] = ''
         list_df.append(s0)
+    
 
+groupby_label_list(label_cols_list)
+    
 df = pd.concat(list_df, axis = 0)
 
-
-# # working:
-# list_df = []
-# for elem in data_cols_list:
-#     s0 = pd.DataFrame(df1.groupby(label_cols_list[2])[elem].sum())
-#     list_df.append(s0)
-# df = pd.concat(list_df, axis = 1)
-
-# df_groupby = pd.DataFrame(list_cli_study_num.sum())
-
-# print(B.sum())
-# A = df1.groupby(label_cols_list[2])[data_cols_list[8]].sum().to_list()
-
-# print(A)
-# df1.loc['A'] = A
-# print(f'groupby_col[2]: {df1.groupby(label_cols_list[2]).sum()}')
-# df1.loc['test'] = df1.groupby(label_cols_list[2]).sum()
-
-
-# # for datanum in range(len(data_cols)):
-#     # for labelnum in range(1,len(label_cols)):
-#         # print(f'data_cols[datanum]: {data_cols[datanum]}')
-# subtotal[data_cols[8]] = df1.groupby(label_cols[3]).agg(sum_col3 = ('Unnamed: 13','sum')).reset_index()
-
-
-# df1.loc['subtotal'] = {**subtotal}
-
-# print(label_cols)
+# print(label_cols_list)
 # print(data_cols)
 
 # print(f'budget: {budget}')
@@ -183,11 +149,11 @@ df = pd.concat(list_df, axis = 0)
 # print(f'actual: {actual}')
 # print(f'actuals_vs_budget: {actuals_vs_budget}')
 
+df1.loc[''] = ''
 res = {**budget, **reforecast, **actual, **actuals_vs_budget, **actuals_vs_april}
 df1.loc['recal'] = res
 df1.loc['variance'] = df1.loc[11]-df1.loc['recal']
-
-# print(res)
+df1.loc[''] = ''
 
 
 #######################################################################################
@@ -216,11 +182,7 @@ for row in range(1,rows):
     for column in range(16,20):
         assign_fy_by_row(actuals_recal, row, column, df1)
         actuals_recal[0] = 'actuals_recal'
-    #########
-    # '''Groupby labels'''
-    # for column in range(6,columns):
-    #     assign_fy_by_row(budget_type, row, column, df1)
-    #     label_cols[0] = 'budget_type'
+
         
 # print(f'budget_recal: {budget_recal}')
 # print(f'april_reforecast_recal: {april_reforecast_recal}')
@@ -231,6 +193,7 @@ df1['budget_recal'] = pd.DataFrame.from_dict(budget_recal, orient = 'index')
 df1['april_reforecast_recal'] = pd.DataFrame.from_dict(april_reforecast_recal, orient = 'index')
 df1['actuals_recal'] = pd.DataFrame.from_dict(actuals_recal, orient = 'index')
 df1[''] = ''
+
 # df1['Budget Type'] = pd.DataFrame.from_dict(budget_type, orient = 'index')
 
 # variance_act_act = df1['actuals_recal'] - df1['april_reforecast_recal'] 
@@ -255,9 +218,11 @@ apr_act_var_imported = pd.DataFrame(df1, columns = ['Unnamed: 29'])
 #######################################################################################
 
 writer = pd.ExcelWriter('new_book.xlsx')
-writer2 = pd.ExcelWriter('new_book2.xlsx')
-
-df.to_excel(writer2, 'new_sheet1')
-df1.to_excel(writer, 'new_sheet')
+# df1.merge(df,left_on='Budget Type', right_on = )
+res = pd.concat([df1, df])
+res.to_excel(writer, 'new_sheet')
 writer.save() 
-writer2.save() 
+
+# writer2 = pd.ExcelWriter('new_book2.xlsx')
+# df.to_excel(writer2, 'new_sheet1')
+# writer2.save() 
