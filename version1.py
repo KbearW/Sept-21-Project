@@ -8,8 +8,8 @@ rows, columns = df1.shape
 
 col_list = df1.columns.tolist()
 
-label_cols = col_list[0:5]
-data_cols = col_list[5:]
+label_cols_list = col_list[0:5]
+data_cols_list = col_list[5:]
 
 # print(col_list)
 # print(data_cols)
@@ -26,8 +26,8 @@ def fill_na(cols):
         df1[col].fillna(0,inplace= True)
         
 
-ffill_blanks(label_cols)
-fill_na(data_cols)
+ffill_blanks(label_cols_list)
+fill_na(data_cols_list)
 
 ###############################################################################
 def assign_quarterly_sum(array_name, quarter_name, row_number, column_number, sheet):
@@ -91,43 +91,82 @@ for row in range(1, rows):
                 'FY': 29
                 }
 
-    assign_quarterly_sum( budget, data_cols[0], row, budget_map['Q1'], df1)
-    assign_quarterly_sum( budget, data_cols[1], row, budget_map['Q2'], df1)
-    assign_quarterly_sum( budget, data_cols[2], row, budget_map['Q3'], df1)
-    assign_quarterly_sum( budget, data_cols[3], row, budget_map['Q4'], df1)
-    assign_quarterly_sum( budget, data_cols[4], row, budget_map['FY'], df1)
+    assign_quarterly_sum( budget, data_cols_list[0], row, budget_map['Q1'], df1)
+    assign_quarterly_sum( budget, data_cols_list[1], row, budget_map['Q2'], df1)
+    assign_quarterly_sum( budget, data_cols_list[2], row, budget_map['Q3'], df1)
+    assign_quarterly_sum( budget, data_cols_list[3], row, budget_map['Q4'], df1)
+    assign_quarterly_sum( budget, data_cols_list[4], row, budget_map['FY'], df1)
 
-    assign_quarterly_sum( reforecast, data_cols[5], row, reforecast_map['Q1'], df1)
-    assign_quarterly_sum( reforecast, data_cols[6], row, reforecast_map['Q2'], df1)
-    assign_quarterly_sum( reforecast, data_cols[7], row, reforecast_map['Q3'], df1)
-    assign_quarterly_sum( reforecast, data_cols[8], row, reforecast_map['Q4'], df1)
-    assign_quarterly_sum( reforecast, data_cols[9], row, reforecast_map['FY'], df1)
+    assign_quarterly_sum( reforecast, data_cols_list[5], row, reforecast_map['Q1'], df1)
+    assign_quarterly_sum( reforecast, data_cols_list[6], row, reforecast_map['Q2'], df1)
+    assign_quarterly_sum( reforecast, data_cols_list[7], row, reforecast_map['Q3'], df1)
+    assign_quarterly_sum( reforecast, data_cols_list[8], row, reforecast_map['Q4'], df1)
+    assign_quarterly_sum( reforecast, data_cols_list[9], row, reforecast_map['FY'], df1)
     
-    assign_quarterly_sum( actual, data_cols[10], row, actual_map['Q1'], df1)
-    assign_quarterly_sum( actual, data_cols[11], row, actual_map['Q2'], df1)
-    assign_quarterly_sum( actual, data_cols[12], row, actual_map['Q3'], df1)
-    assign_quarterly_sum( actual, data_cols[13], row, actual_map['Q4'], df1)
-    assign_quarterly_sum( actual, data_cols[14], row, actual_map['FY'], df1)
+    assign_quarterly_sum( actual, data_cols_list[10], row, actual_map['Q1'], df1)
+    assign_quarterly_sum( actual, data_cols_list[11], row, actual_map['Q2'], df1)
+    assign_quarterly_sum( actual, data_cols_list[12], row, actual_map['Q3'], df1)
+    assign_quarterly_sum( actual, data_cols_list[13], row, actual_map['Q4'], df1)
+    assign_quarterly_sum( actual, data_cols_list[14], row, actual_map['FY'], df1)
 
-    assign_quarterly_sum( actuals_vs_budget, data_cols[15], row, var_actuals_vs_budget_map['Q1'], df1)
-    assign_quarterly_sum( actuals_vs_budget, data_cols[16], row, var_actuals_vs_budget_map['Q2'], df1)
-    assign_quarterly_sum( actuals_vs_budget, data_cols[17], row, var_actuals_vs_budget_map['Q3'], df1)
-    assign_quarterly_sum( actuals_vs_budget, data_cols[18], row, var_actuals_vs_budget_map['Q4'], df1)
-    assign_quarterly_sum( actuals_vs_budget, data_cols[19], row, var_actuals_vs_budget_map['FY'], df1)
+    assign_quarterly_sum( actuals_vs_budget, data_cols_list[15], row, var_actuals_vs_budget_map['Q1'], df1)
+    assign_quarterly_sum( actuals_vs_budget, data_cols_list[16], row, var_actuals_vs_budget_map['Q2'], df1)
+    assign_quarterly_sum( actuals_vs_budget, data_cols_list[17], row, var_actuals_vs_budget_map['Q3'], df1)
+    assign_quarterly_sum( actuals_vs_budget, data_cols_list[18], row, var_actuals_vs_budget_map['Q4'], df1)
+    assign_quarterly_sum( actuals_vs_budget, data_cols_list[19], row, var_actuals_vs_budget_map['FY'], df1)
     
-    assign_quarterly_sum( actuals_vs_april, data_cols[20], row, var_actuals_vs_april_map['Q1'], df1)
-    assign_quarterly_sum( actuals_vs_april, data_cols[21], row, var_actuals_vs_april_map['Q2'], df1)
-    assign_quarterly_sum( actuals_vs_april, data_cols[22], row, var_actuals_vs_april_map['Q3'], df1)
-    assign_quarterly_sum( actuals_vs_april, data_cols[23], row, var_actuals_vs_april_map['Q4'], df1)
-    assign_quarterly_sum( actuals_vs_april, data_cols[24], row, var_actuals_vs_april_map['FY'], df1)
+    assign_quarterly_sum( actuals_vs_april, data_cols_list[20], row, var_actuals_vs_april_map['Q1'], df1)
+    assign_quarterly_sum( actuals_vs_april, data_cols_list[21], row, var_actuals_vs_april_map['Q2'], df1)
+    assign_quarterly_sum( actuals_vs_april, data_cols_list[22], row, var_actuals_vs_april_map['Q3'], df1)
+    assign_quarterly_sum( actuals_vs_april, data_cols_list[23], row, var_actuals_vs_april_map['Q4'], df1)
+    assign_quarterly_sum( actuals_vs_april, data_cols_list[24], row, var_actuals_vs_april_map['FY'], df1)
+
+# budget_type = {}
+# label_cols[2] = {}
+# for datanum in range(len(data_cols)):
+#     # print(f'data_cols[datanum]: {data_cols[datanum]}')
+#     # print(f'label_cols[1]: {label_cols[1]}')
+
+#     budget_type[datanum] =df1.groupby(label_cols[1])[data_cols[datanum]].sum()
+# df1.loc['budget_type'] = budget_type
+
+# print(df1.groupby(label_cols[1])[data_cols[9]].sum())
+# print(type(df1.groupby(label_cols[1])[data_cols[9]].sum()))
+# budget_type['activity'] = df1.groupby(label_cols[1])[data_cols[9]].sum()
+# df1.loc['test'] = budget_type
+# print(df1.groupby(label_cols[2])[data_cols[9]].sum())
+# print(df1.groupby(label_cols[3])[data_cols[9]].sum())
+# print(df1.groupby(label_cols[4])[data_cols[9]].sum())
+
+# pivot1 = pd.pivot_table(df1, index=label_cols_list, values = data_cols_list, aggfunc = np.sum)
+# print(pivot1)
+# df1.loc['pivot'] = pivot1
 
 subtotal = {}
-for labelnum in range(1,len(label_cols)):
-    for datanum in range(len(data_cols)):
-        print(datanum, labelnum)
-        subtotal[labelnum] = df1.groupby(label_cols[labelnum])[data_cols[datanum]].sum()
+print(f'label: {label_cols_list[2]}')  #2  Clinical Study Number
 
-df1.loc['subtotal'] = {**subtotal}
+list_cli_study_num = []
+# for elem in data_cols_list:
+#     print(elem, df1.groupby(label_cols_list[2])[elem].sum())
+df = pd.DataFrame(df1.groupby(label_cols_list[2])[data_cols_list[8]].sum())
+# df_groupby = pd.DataFrame(list_cli_study_num.sum())
+
+# print(B.sum())
+# A = df1.groupby(label_cols_list[2])[data_cols_list[8]].sum().to_list()
+
+# print(A)
+# df1.loc['A'] = A
+# print(f'groupby_col[2]: {df1.groupby(label_cols_list[2]).sum()}')
+# df1.loc['test'] = df1.groupby(label_cols_list[2]).sum()
+
+
+# # for datanum in range(len(data_cols)):
+#     # for labelnum in range(1,len(label_cols)):
+#         # print(f'data_cols[datanum]: {data_cols[datanum]}')
+# subtotal[data_cols[8]] = df1.groupby(label_cols[3]).agg(sum_col3 = ('Unnamed: 13','sum')).reset_index()
+
+
+# df1.loc['subtotal'] = {**subtotal}
 
 # print(label_cols)
 # print(data_cols)
@@ -209,5 +248,9 @@ apr_act_var_imported = pd.DataFrame(df1, columns = ['Unnamed: 29'])
 #######################################################################################
 
 writer = pd.ExcelWriter('new_book.xlsx')
+writer2 = pd.ExcelWriter('new_book2.xlsx')
+
+df.to_excel(writer2, 'new_sheet1')
 df1.to_excel(writer, 'new_sheet')
 writer.save() 
+writer2.save() 
