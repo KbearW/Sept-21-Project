@@ -138,17 +138,31 @@ for row in range(1, rows):
 # print(df1.groupby(label_cols[3])[data_cols[9]].sum())
 # print(df1.groupby(label_cols[4])[data_cols[9]].sum())
 
-# pivot1 = pd.pivot_table(df1, index=label_cols_list, values = data_cols_list, aggfunc = np.sum)
-# print(pivot1)
-# df1.loc['pivot'] = pivot1
+list_df = []
+for label in label_cols_list:
+    for elem in data_cols_list:
+        s0 = pd.DataFrame(df1.groupby(label)[elem].sum())
+        list_df.append(s0)
 
-subtotal = {}
-print(f'label: {label_cols_list[2]}')  #2  Clinical Study Number
+    # s1 = pd.DataFrame(df1.groupby(label_cols_list[2])[elem].sum())
+    # s2 = pd.DataFrame(df1.groupby(label_cols_list[3])[elem].sum())
+    # s3 = pd.DataFrame(df1.groupby(label_cols_list[4])[elem].sum())
 
-list_cli_study_num = []
+    # list_df.append(s1)
+    # list_df.append(s2)
+    # list_df.append(s3)
+
+# print(list_df)
+df = pd.concat(list_df, axis = 0)
+
+
+# # working:
+# list_df = []
 # for elem in data_cols_list:
-#     print(elem, df1.groupby(label_cols_list[2])[elem].sum())
-df = pd.DataFrame(df1.groupby(label_cols_list[2])[data_cols_list[8]].sum())
+#     s0 = pd.DataFrame(df1.groupby(label_cols_list[2])[elem].sum())
+#     list_df.append(s0)
+# df = pd.concat(list_df, axis = 1)
+
 # df_groupby = pd.DataFrame(list_cli_study_num.sum())
 
 # print(B.sum())
