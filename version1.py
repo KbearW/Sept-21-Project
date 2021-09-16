@@ -142,7 +142,8 @@ list_df = []
 
 for elem in data_cols_list:
     for label in label_cols_list:
-        s0 = pd.DataFrame(df1.groupby(label)[elem].sum())
+        col_label = elem
+        s0 = pd.DataFrame(df1.groupby(label).agg(col_label = (elem, 'sum')))
         list_df.append(s0)
 
 df = pd.concat(list_df, axis = 0)
